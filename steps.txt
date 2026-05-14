@@ -1,0 +1,13 @@
+Step1. Create a virtual environment
+    python -m venv venv_name
+
+Step2. Activate the environment
+    venv5\Scripts\activate
+
+Step3. Configure API KEYS create .env file
+
+Step4. Install dependencies (Libraries required for the project to execute)
+    pip install -r requirements.txt
+
+Step5. Run the project
+    streamlit run app.py

@@ -1,0 +1,7 @@
+graph TB
+    A[User Query] --> B[Language Model]
+    B --> C[Retriever]
+    C --> D[Vector Database]
+    D --> E[Relevant Documents]
+    E --> F[Language Model]
+    F --> G[Generated Response]
