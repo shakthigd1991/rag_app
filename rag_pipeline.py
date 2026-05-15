@@ -40,7 +40,7 @@ def get_rag_pipeline(file_path):
 
     # Create vector store
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    vector_store = PineconeVectorStore(index=index, embedding_function=embeddings.embed)
+    vector_store = PineconeVectorStore(index=index, embedding=embeddings)
 
     # Add chunks to vector store
     for i, chunk in enumerate(chunks):
