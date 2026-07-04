@@ -1,6 +1,7 @@
 # Virtual Environment
-venv_ragapp/
+venv_rag/
 venv/
+venv/ragapp/
 
 # Environment Variables
 .env
@@ -24,3 +25,13 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Uploaded files
+uploads/
+
+# Logs
+*.log
+
+# Build
+dist/
+build/

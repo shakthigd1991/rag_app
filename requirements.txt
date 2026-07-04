@@ -7,3 +7,11 @@ pinecone==7.3.0
 python-dotenv==1.1.1
 streamlit==1.47.1
 pymupdf
+
+google-api-python-client
+google-auth
+google-auth-oauthlib \
+boto3
+
+langchain-text-splitters
+openai
