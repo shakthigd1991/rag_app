@@ -1,29 +1,57 @@
-import os
-from .config import PINECONE_API_KEY, PINECONE_INDEX, EMBED_MODEL  # instead of hardcoding "text-embedding-3-small"
-from pinecone import Pinecone, ServerlessSpec
+from pinecone import Pinecone
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 
-pc = Pinecone(api_key=PINECONE_API_KEY)
-if PINECONE_INDEX not in pc.list_indexes().names():
-    pc.create_index(
-        name=PINECONE_INDEX, dimension=1536, metric="cosine",
-        spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+from config import (
+    OPENAI_API_KEY,
+    PINECONE_API_KEY,
+    PINECONE_INDEX,
+    EMBED_MODEL,
+)
+
+
+# =========================================================
+# Embeddings
+# =========================================================
+
+embeddings = OpenAIEmbeddings(
+    model=EMBED_MODEL,
+    api_key=OPENAI_API_KEY,
+)
+
+
+# =========================================================
+# Pinecone client
+# =========================================================
+
+pc = Pinecone(
+    api_key=PINECONE_API_KEY
+)
+
+
+# =========================================================
+# Verify index
+# =========================================================
+
+existing_indexes = [
+    index["name"]
+    for index in pc.list_indexes()
+]
+
+if PINECONE_INDEX not in existing_indexes:
+
+    raise RuntimeError(
+        f"Pinecone index '{PINECONE_INDEX}' "
+        f"does not exist. Available indexes: "
+        f"{existing_indexes}"
     )
 
-index = pc.Index(PINECONE_INDEX)    
-# Create vector store
-embeddings = OpenAIEmbeddings(model=EMBED_MODEL)  # Use the model from config.py
-vector_store = PineconeVectorStore(index=index, embedding=embeddings)
 
+# =========================================================
+# Vector store
+# =========================================================
 
-def upsert_chunks(chunks, document_id):
-    # Add chunks WITHOUT wiping the index — accumulates a knowledge base.
-    # For creating the metadata, we can use a unique document ID for each upload
-    # Add chunks to vector store
-    vector_store.add_texts(
-        texts=[c.page_content for c in chunks],
-        metadatas=[c.metadata for c in chunks],
-        ids=[f"{document_id}_{i}" for i in range(len(chunks))]
-    )
-    return len(chunks)
+vector_store = PineconeVectorStore(
+    index_name=PINECONE_INDEX,
+    embedding=embeddings,
+)

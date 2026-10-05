@@ -35,3 +35,17 @@ uploads/
 # Build
 dist/
 build/
+
+# AWS Lambda generated dependencies
+lambda_layer/
+
+# Databases / local state
+*.db
+ingestion.db
+
+# Lambda generated artifacts
+lambda_layer/
+*.zip
+*.7z
+
+idea/
